@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: Windows 11](https://img.shields.io/badge/Platform-Windows%2011-0078D4.svg)](https://microsoft.com)
 [![Engine: Gemini 3.8 Flash](https://img.shields.io/badge/Engine-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google)
-[![Tests: 100% Passing](https://img.shields.io/badge/Tests-76%2F76%20Passing-22C55E.svg)](tests/)
+[![Tests: 100% Passing](https://img.shields.io/badge/Tests-84%2F84%20Passing-22C55E.svg)](tests/)
 
 ---
 
@@ -79,7 +79,7 @@ Ask *"Crux, analyze my idea: an automated service for X, is it profitable?"*:
 
 ### 1. Clone & Setup
 ```powershell
-git clone https://github.com/YOUR_USERNAME/Crux-OS.git
+git clone https://github.com/TortocheTV/Crux-OS.git
 cd Crux-OS
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -112,6 +112,19 @@ Crux OS is architected across **102 comprehensive capabilities**:
 - **Voice Intelligence** (Voice Enrollment, Diarization, SSML Expressiveness, Live Interpreter)
 - **Audio & Hardware** (WASAPI Per-App Mixer, DDC/CI Multi-Display, Native Spotify CLI)
 - **Proactive Core** (5D Hybrid Memory, Habit Engine, Project Scaffolder, Auto-Updater with User Consent)
+
+---
+
+## 👥 Contributors & Acknowledgements
+
+Crux OS is built and maintained by:
+
+| Contributor / Partner | Role | Focus Area |
+|:---|:---|:---|
+| **[Corentin (@TortocheTV)](https://github.com/TortocheTV)** | **Lead Creator & Systems Architect** | Full project vision, Windows integration, voice ergonomics, tests & workflow |
+| **[Google Antigravity](https://github.com/google)** | **Autonomous Agentic Coding Engine** | Multi-agent orchestration, refactoring, latency optimization & test verification |
+| **[Google DeepMind Gemini](https://deepmind.google/technologies/gemini/)** | **Multimodal AI Brain** | Gemini 3.8 Flash Vision, low-latency reasoning & generative dynamic UI synthesis |
+| **[Louis-CFM (Coucou)](https://github.com/Louis-CFM/coucou)** | **Dynamic Island UX Foundation** | Original Coucou notch design & Mochi companion |
 
 ---
 
