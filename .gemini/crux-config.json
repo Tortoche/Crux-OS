@@ -1,0 +1,17 @@
+{
+  "project": "Crux-OS",
+  "engine": "Google Antigravity & Gemini 3.8 Flash",
+  "assistant": "Crux",
+  "lead_architect": "Corentin (TortocheTV)",
+  "features": {
+    "generative_dynamic_ui": true,
+    "multimodal_vision": true,
+    "five_dimensional_memory": true,
+    "coucou_dynamic_island": true,
+    "headless_win32_automation": true
+  },
+  "ai_co_authors": [
+    "Google Antigravity",
+    "Google DeepMind Gemini"
+  ]
+}
