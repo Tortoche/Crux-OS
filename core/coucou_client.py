@@ -226,6 +226,32 @@ class CoucouClient:
             "emotion": emotion
         })
 
+    def render_dynamic_ui(self, html: str, title: str = "Crux UI", width: int = 640, height: int = 400, view_id: str = "custom_view", view_type: str = "custom"):
+        """Affiche une interface dynamique générée à la volée dans la bulle Coucou."""
+        self.send_event("dynamic_ui", {
+            "action": "show",
+            "id": view_id,
+            "title": title,
+            "html": html,
+            "width": width,
+            "height": height,
+            "type": view_type
+        })
+
+    def update_dynamic_ui(self, html: str, target_selector: Optional[str] = None):
+        """Met à jour le contenu d'une interface dynamique affichée."""
+        self.send_event("dynamic_ui", {
+            "action": "update",
+            "html": html,
+            "target": target_selector
+        })
+
+    def close_dynamic_ui(self):
+        """Referme la bulle d'interface dynamique."""
+        self.send_event("dynamic_ui", {
+            "action": "hide"
+        })
+
     def open_settings(self):
         """Ouvre la fenêtre des réglages et configurations de Coucou."""
         self.send_event("open_settings", {})

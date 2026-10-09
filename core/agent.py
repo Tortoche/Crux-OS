@@ -19,6 +19,7 @@ from core.memory.manager import MemoryManager
 from core.vision.screen_capture import ScreenCapture
 from core.agent_tools.computer_use import ComputerUseController
 from core.plugins.manager import PluginManager
+from core.ui_generator.runtime import DynamicUIRuntime
 
 USER_NAME = "Corentin"
 
@@ -93,6 +94,9 @@ class CruxAgent:
 
         # Écosystème de plugins (IoT Lumières & Domotique)
         self.plugins = PluginManager()
+
+        # Moteur d'interface dynamique générative (Generative Dynamic UI)
+        self.ui_runtime = DynamicUIRuntime.get_instance()
         
         # Suivi de conversation native Antigravity (réutilisation de session pour 0 latence)
         self._antigravity_cid: Optional[str] = None
@@ -655,6 +659,41 @@ class CruxAgent:
         if any(tr in lower_clean for tr in vision_triggers):
             self.hud.tool_use("Vision Écran", {"action": "Capture et analyse multimodale Gemini"})
             reply = self._query_screen_vision(user_text)
+            self._record_turn("user", user_text)
+            self._record_turn("model", reply)
+            return reply, False
+
+        # ==========================================
+        # 2.5 GENERATIVE DYNAMIC UI (INTERFACES EN DIRECT DANS LA BULLE COUCOU)
+        # ==========================================
+        if any(w in lower_clean for w in ["ferme l'interface", "ferme la bulle", "ferme l'ui", "masque l'interface", "masque la bulle"]):
+            self.ui_runtime.close()
+            reply = "Interface refermée."
+            self._record_turn("user", user_text)
+            self._record_turn("model", reply)
+            return reply, False
+
+        if any(w in lower_clean for w in ["ajoute la tache", "ajoute l'activite", "ajoute l'activité", "ajoute une tache", "ajoute une activité", "ajoute a mes activites"]):
+            m = re.search(r"(?:ajoute\s+(?:la\s+t[aâ]che|l['’]activit[eé]|une\s+t[aâ]che|une\s+activit[eé]|a\s+mes\s+activit[eé]s)\s+)(.+)", user_text, flags=re.IGNORECASE)
+            task_text = m.group(1).strip() if m else "Nouvelle tâche"
+            self.ui_runtime.append_task(task_text)
+            self.sfx.play("chime")
+            self.hud.tool_use("Interface Dynamique", {"action": "Ajout tâche en direct", "texte": task_text})
+            reply = f"Activité '{task_text}' ajoutée et affichée en direct."
+            self._record_turn("user", user_text)
+            self._record_turn("model", reply)
+            return reply, False
+
+        dynamic_ui_triggers = [
+            "affiche mes activites", "affiche mes activités", "affiche mes taches", "affiche mes tâches",
+            "cree une interface", "crée une interface", "affiche un dashboard", "affiche un tableau de bord",
+            "cree une bulle", "crée une bulle", "affiche l'interface", "affiche la bulle"
+        ]
+        if any(tr in lower_clean for tr in dynamic_ui_triggers):
+            self.sfx.play("chime")
+            self.hud.tool_use("Interface Dynamique", {"action": "Génération à la volée", "requête": user_text})
+            view = self.ui_runtime.render_from_prompt(user_text)
+            reply = f"Interface {view.get('title', '')} générée et affichée dans la bulle."
             self._record_turn("user", user_text)
             self._record_turn("model", reply)
             return reply, False
