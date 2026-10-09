@@ -17,6 +17,8 @@ class TestMobileBridge(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(os.path.exists(os.path.join(mobile_dir, "app.js")), "app.js manquant")
         self.assertTrue(os.path.exists(os.path.join(mobile_dir, "manifest.json")), "manifest.json manquant")
         self.assertTrue(os.path.exists(os.path.join(mobile_dir, "sw.js")), "sw.js manquant")
+        self.assertTrue(os.path.exists(os.path.join(mobile_dir, "icon-192.png")), "icon-192.png manquant")
+        self.assertTrue(os.path.exists(os.path.join(mobile_dir, "icon-512.png")), "icon-512.png manquant")
 
     def test_bridge_routes_registered(self):
         routes = [r.resource.canonical for r in self.bridge.app.router.routes() if hasattr(r, 'resource') and r.resource]
@@ -55,6 +57,12 @@ class TestMobileBridge(unittest.IsolatedAsyncioTestCase):
         resp_pc = await self.bridge.handle_handoff_to_pc(mock_req)
         self.assertEqual(resp_pc.status, 200)
         self.assertEqual(self.bridge.handoff.active_node, "pc")
+
+    def test_start_in_background(self):
+        bridge = MobileBridgeService(port=49255)
+        thread = bridge.start_in_background()
+        self.assertTrue(thread.is_alive())
+        self.assertEqual(thread.name, "CruxMobileBridgeThread")
 
 if __name__ == "__main__":
     unittest.main()

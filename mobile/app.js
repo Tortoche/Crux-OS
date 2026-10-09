@@ -534,24 +534,49 @@ function updateMochiSpeech(text) {
 // ==========================================
 async function handleHandoffToMobile() {
   triggerHaptic([30, 60]);
-  if (STATE.activeUrl) {
+  const endpoint = STATE.activeUrl || CONNECTIVITY_ENDPOINTS.PRIORITY_1_PC;
+  try {
+    await fetch(`${endpoint}/api/handoff/to_mobile`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(2000)
+    });
+  } catch (e) {
     try {
-      await fetch(`${STATE.activeUrl}/api/handoff/to_mobile`, { method: 'POST' });
-    } catch (e) {}
+      await fetch(`${CONNECTIVITY_ENDPOINTS.PRIORITY_2_FEDORA}/api/handoff/to_mobile`, {
+        method: 'POST',
+        signal: AbortSignal.timeout(2000)
+      });
+    } catch (e2) {}
   }
   speakJarvisReply("Bascule effectuée sur votre téléphone. Le PC se met en veille.");
 }
 
 async function handleHandoffToPC() {
   triggerHaptic([30, 60]);
-  const targetUrl = CONNECTIVITY_ENDPOINTS.PRIORITY_1_PC;
+  // 1. Essayer en direct sur le PC
   try {
-    const res = await fetch(`${targetUrl}/api/handoff/to_pc`, { method: 'POST' });
+    const res = await fetch(`${CONNECTIVITY_ENDPOINTS.PRIORITY_1_PC}/api/handoff/to_pc`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(1500)
+    });
     if (res.ok) {
       speakJarvisReply("Reprise sur le PC effectuée. Sortie audio basculée sur l'écran PL2766H.");
       return;
     }
   } catch (e) {}
+
+  // 2. Si le PC est en veille ou éteint, ordonner le réveil et la reprise via le relais Fedora H24
+  try {
+    const fedoraRes = await fetch(`${CONNECTIVITY_ENDPOINTS.PRIORITY_2_FEDORA}/api/handoff/to_pc`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(3000)
+    });
+    if (fedoraRes.ok) {
+      speakJarvisReply("Reprise ordonnée. Paquet de réveil envoyé au PC et sortie audio basculée sur l'écran PL2766H.");
+      return;
+    }
+  } catch (e) {}
+
   speakJarvisReply("Reprise ordonnée sur le PC principal.");
 }
 

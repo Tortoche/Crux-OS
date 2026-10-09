@@ -101,6 +101,15 @@ class CruxApplication:
         self.proactive.start()
         print("[Crux Proactif] Moteur proactif d'arrière-plan démarré.")
 
+        # 9. Pont Mobile Tactile & Télécommande Handoff
+        try:
+            from core.mobile_bridge.bridge_service import MobileBridgeService
+            self.mobile_bridge = MobileBridgeService.get_instance(agent=self.agent)
+            self.mobile_bridge.start_in_background()
+            print("[Crux Mobile] Pont mobile tactile et télécommande PC actif sur 0.0.0.0:49230.")
+        except Exception as e:
+            print(f"[Crux Mobile] Pont mobile non démarré : {e}")
+
     def _find_fifine_microphone(self) -> int:
         """Détecte et verrouille le microphone Fifine directement."""
         devices = sd.query_devices()

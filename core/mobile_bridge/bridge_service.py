@@ -266,3 +266,17 @@ class MobileBridgeService:
         if self.runner:
             await self.runner.cleanup()
             self.runner = None
+
+    def start_in_background(self):
+        """Démarre le serveur aiohttp dans un thread d'arrière-plan."""
+        import threading
+        def run():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            self._loop = loop
+            loop.run_until_complete(self.start())
+            loop.run_forever()
+
+        t = threading.Thread(target=run, daemon=True, name="CruxMobileBridgeThread")
+        t.start()
+        return t

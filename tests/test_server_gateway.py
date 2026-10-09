@@ -55,6 +55,37 @@ class TestServerGateway(unittest.IsolatedAsyncioTestCase):
         resp_telemetry = await self.gateway.handle_telemetry(mock_req)
         self.assertEqual(resp_telemetry.status, 200)
 
+        # Test Wake PC
+        resp_wake = await self.gateway.handle_wake_pc(mock_req)
+        self.assertEqual(resp_wake.status, 200)
+
+        # Test Handoff to PC
+        resp_to_pc = await self.gateway.handle_handoff_to_pc(mock_req)
+        self.assertEqual(resp_to_pc.status, 200)
+        self.assertEqual(self.gateway.memory.data["working"]["active_device"], "pc")
+
+        # Test Handoff to Mobile
+        resp_to_mob = await self.gateway.handle_handoff_to_mobile(mock_req)
+        self.assertEqual(resp_to_mob.status, 200)
+        self.assertEqual(self.gateway.memory.data["working"]["active_device"], "mobile")
+
+        # Test PC Control (when PC offline)
+        mock_ctrl = MagicMock()
+        mock_ctrl.json = unittest.mock.AsyncMock(return_value={"command": "volume_up", "params": {}})
+        resp_ctrl = await self.gateway.handle_pc_control(mock_ctrl)
+        self.assertEqual(resp_ctrl.status, 503)
+
+        # Test Chat with Handoff triggers
+        mock_chat_mob = MagicMock()
+        mock_chat_mob.json = unittest.mock.AsyncMock(return_value={"prompt": "Crux passe sur mon téléphone"})
+        resp_chat_mob = await self.gateway.handle_chat(mock_chat_mob)
+        self.assertEqual(resp_chat_mob.status, 200)
+
+        mock_chat_pc = MagicMock()
+        mock_chat_pc.json = unittest.mock.AsyncMock(return_value={"prompt": "Crux reprends sur le PC"})
+        resp_chat_pc = await self.gateway.handle_chat(mock_chat_pc)
+        self.assertEqual(resp_chat_pc.status, 200)
+
     def test_deployer_status_check(self):
         deployer = FedoraRelayDeployer()
         api_res = deployer.verify_gateway_api()

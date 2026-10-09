@@ -30,6 +30,7 @@ logger = logging.getLogger("CruxRelayGateway")
 DEFAULT_PORT = int(os.environ.get("CRUX_PORT", 49230))
 WINDOWS_PC_IP = os.environ.get("WINDOWS_PC_IP", "192.168.1.16")
 WINDOWS_PC_PORT = int(os.environ.get("WINDOWS_PC_PORT", 49230))
+WINDOWS_PC_MAC = os.environ.get("WINDOWS_PC_MAC", "10:FF:E0:B4:A4:EE")
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 MOBILE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mobile")
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -196,6 +197,9 @@ class CruxRelayGateway:
         self.app.router.add_get("/api/ui/state", self.handle_get_ui)
         self.app.router.add_post("/api/ui/action", self.handle_ui_action)
         self.app.router.add_post("/api/pc/wake", self.handle_wake_pc)
+        self.app.router.add_post("/api/pc/control", self.handle_pc_control)
+        self.app.router.add_post("/api/handoff/to_mobile", self.handle_handoff_to_mobile)
+        self.app.router.add_post("/api/handoff/to_pc", self.handle_handoff_to_pc)
         self.app.router.add_get("/api/telemetry", self.handle_telemetry)
         self.app.router.add_get("/ws", self.handle_ws)
 
@@ -294,11 +298,101 @@ class CruxRelayGateway:
 
     async def handle_wake_pc(self, request):
         """Envoie un paquet magique Wake-on-LAN au PC Windows."""
-        mac_addr = "D8:BB:C1:2A:3B:4C"  # MAC par défaut ou broadcast
+        mac_addr = WINDOWS_PC_MAC
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self._send_wol_packet, mac_addr)
-            return web.json_response({"success": True, "message": "Paquet Wake-on-LAN transmis au PC principal."})
+            return web.json_response({"success": True, "message": f"Paquet Wake-on-LAN transmis au PC principal ({mac_addr})."})
+        except Exception as e:
+            return web.json_response({"success": False, "error": str(e)}, status=500)
+
+    async def handle_handoff_to_pc(self, request):
+        """Ordonne la reprise sur le PC Windows : envoi WOL + sync mémoire + notification si PC répond."""
+        try:
+            self.memory.data.setdefault("working", {})["active_device"] = "pc"
+            self.memory.save()
+            
+            # 1. Envoi du paquet magique Wake-on-LAN au PC
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, self._send_wol_packet, WINDOWS_PC_MAC)
+            
+            # 2. Si le PC est allumé, lui relayer l'ordre de reprise
+            if await self.is_pc_online():
+                try:
+                    import urllib.request
+                    req = urllib.request.Request(
+                        f"http://{WINDOWS_PC_IP}:{WINDOWS_PC_PORT}/api/handoff/to_pc",
+                        data=b"{}",
+                        headers={"Content-Type": "application/json"}
+                    )
+                    await loop.run_in_executor(None, lambda: urllib.request.urlopen(req, timeout=1.0))
+                except Exception:
+                    pass
+            
+            await self._broadcast_ws({"type": "handoff", "active_node": "pc"})
+            reply = "Reprise ordonnée sur le PC principal. Sortie audio basculée sur l'écran PL2766H."
+            return web.json_response({"success": True, "reply": reply, "active_node": "pc"})
+        except Exception as e:
+            return web.json_response({"success": False, "error": str(e)}, status=500)
+
+    async def handle_handoff_to_mobile(self, request):
+        """Bascule la session vers le smartphone : notification PC (veille) et activation relais."""
+        try:
+            self.memory.data.setdefault("working", {})["active_device"] = "mobile"
+            self.memory.save()
+            
+            # Si le PC est en ligne, lui demander de passer en veille
+            if await self.is_pc_online():
+                try:
+                    import urllib.request
+                    loop = asyncio.get_event_loop()
+                    req = urllib.request.Request(
+                        f"http://{WINDOWS_PC_IP}:{WINDOWS_PC_PORT}/api/handoff/to_mobile",
+                        data=b"{}",
+                        headers={"Content-Type": "application/json"}
+                    )
+                    await loop.run_in_executor(None, lambda: urllib.request.urlopen(req, timeout=1.0))
+                except Exception:
+                    pass
+
+            await self._broadcast_ws({"type": "handoff", "active_node": "mobile"})
+            reply = "Bascule effectuée sur votre téléphone. Relais H24 Fedora actif."
+            return web.json_response({"success": True, "reply": reply, "active_node": "mobile"})
+        except Exception as e:
+            return web.json_response({"success": False, "error": str(e)}, status=500)
+
+    async def handle_pc_control(self, request):
+        """Télécommande PC relayée : si le PC est en ligne, transfère la commande."""
+        try:
+            body = await request.json()
+            command = body.get("command", "")
+            params = body.get("params", {})
+            
+            if command in ["wake_pc", "resume_pc"]:
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(None, self._send_wol_packet, WINDOWS_PC_MAC)
+                return web.json_response({"success": True, "message": "Paquet Wake-on-LAN transmis au PC."})
+
+            if await self.is_pc_online():
+                try:
+                    import urllib.request
+                    loop = asyncio.get_event_loop()
+                    payload = json.dumps({"command": command, "params": params}).encode("utf-8")
+                    req = urllib.request.Request(
+                        f"http://{WINDOWS_PC_IP}:{WINDOWS_PC_PORT}/api/pc/control",
+                        data=payload,
+                        headers={"Content-Type": "application/json"}
+                    )
+                    resp = await loop.run_in_executor(None, lambda: urllib.request.urlopen(req, timeout=2.0).read())
+                    return web.json_response(json.loads(resp.decode("utf-8")))
+                except Exception as e:
+                    return web.json_response({"success": False, "error": f"Erreur relais PC : {e}"}, status=502)
+            else:
+                return web.json_response({
+                    "success": False,
+                    "error": "PC principal Windows actuellement en veille ou éteint.",
+                    "hint": "Utilisez le bouton réveil ou handoff vers PC pour démarrer le PC."
+                }, status=503)
         except Exception as e:
             return web.json_response({"success": False, "error": str(e)}, status=500)
 
@@ -345,6 +439,19 @@ class CruxRelayGateway:
             # Règle d'or de salutation
             name_suffix = f" {USER_NAME}" if not self.has_said_name else ""
             lower = user_text.lower()
+
+            # Intents spécifiques de transition
+            if any(w in lower for w in ["passe sur mon telephone", "passe sur mon portable", "passe sur mobile", "bascule sur mon telephone"]):
+                await self.handle_handoff_to_mobile(request)
+                reply = "Bascule effectuée sur votre téléphone. Relais H24 actif."
+                self.memory.record_turn("model", reply)
+                return web.json_response({"reply": reply, "source": "fedora_relay", "action": "handoff_to_mobile"})
+
+            if any(w in lower for w in ["reprends sur le pc", "reprends sur l'ordinateur", "bascule sur le pc", "reveille le pc", "réveille le pc"]):
+                await self.handle_handoff_to_pc(request)
+                reply = "Reprise sur le PC ordonnée. Paquet de réveil envoyé et audio basculé sur l'écran PL2766H."
+                self.memory.record_turn("model", reply)
+                return web.json_response({"reply": reply, "source": "fedora_relay", "action": "handoff_to_pc"})
 
             if any(w in lower for w in ["salut", "bonjour", "coucou", "hello"]):
                 reply = f"Bonjour{name_suffix}, je suis actif en relais sur le serveur Fedora."

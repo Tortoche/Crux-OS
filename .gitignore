@@ -21,6 +21,8 @@ venv/
 data/*.db
 data/facts.db
 data/voice_profiles.db
+data/memory_5d.json
+data/ui_state.json
 logs/
 *.log
 
