@@ -1,0 +1,18 @@
+[
+  {
+    "id": "refl_1",
+    "topic": "voice_style",
+    "insight": "Corentin préfère les réponses directes en une seule phrase sans fioritures ni salutations superflues.",
+    "confidence": 1.0,
+    "occurrence_count": 1,
+    "last_observed": "2026-10-07T14:28:50.937118"
+  },
+  {
+    "id": "refl_2",
+    "topic": "audio_setup",
+    "insight": "Privilégier le son sur l'enceinte JBL quand elle est allumée, sinon écran PL2766H.",
+    "confidence": 1.0,
+    "occurrence_count": 1,
+    "last_observed": "2026-10-07T14:28:50.937123"
+  }
+]

@@ -1,0 +1,135 @@
+{
+  "travail": {
+    "created_at": "2026-10-06T13:06:35.416805",
+    "windows_count": 14,
+    "music_player": null,
+    "windows": [
+      {
+        "title": "CJ Stream et 2 pages de plus - Profil 1 – Microsoft​ Edge",
+        "process": "msedge.exe",
+        "exe": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "x": -8,
+        "y": -8,
+        "w": 1936,
+        "h": 1048
+      },
+      {
+        "title": "Antigravity — Zen Browser",
+        "process": "zen.exe",
+        "exe": "C:\\Program Files\\Zen Browser\\zen.exe",
+        "x": 1913,
+        "y": -377,
+        "w": 1094,
+        "h": 967
+      },
+      {
+        "title": "Création De L Assistant V...",
+        "process": "Antigravity.exe",
+        "exe": "C:\\Users\\coco\\AppData\\Local\\Programs\\Antigravity\\Antigravity.exe",
+        "x": 1913,
+        "y": 583,
+        "w": 1094,
+        "h": 967
+      },
+      {
+        "title": "Crux AI - Assistant Vocal Jarvis",
+        "process": "WindowsTerminal.exe",
+        "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.24.12741.0_x64__8wekyb3d8bbwe\\WindowsTerminal.exe",
+        "x": 70,
+        "y": 78,
+        "w": 1129,
+        "h": 635
+      },
+      {
+        "title": "crux ai : Explorateur de fichiers",
+        "process": "explorer.exe",
+        "exe": "C:\\Windows\\explorer.exe",
+        "x": 112,
+        "y": 270,
+        "w": 1080,
+        "h": 641
+      },
+      {
+        "title": "Voicemeeter Potato",
+        "process": "voicemeeter8.exe",
+        "exe": "C:\\Program Files (x86)\\VB\\Voicemeeter\\voicemeeter8.exe",
+        "x": 1,
+        "y": 0,
+        "w": 1645,
+        "h": 770
+      },
+      {
+        "title": "CJ Stream — Zen Browser",
+        "process": "zen.exe",
+        "exe": "C:\\Program Files\\Zen Browser\\zen.exe",
+        "x": -8,
+        "y": -8,
+        "w": 1936,
+        "h": 1048
+      },
+      {
+        "title": "Paramètres",
+        "process": "SystemSettings.exe",
+        "exe": "C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe",
+        "x": 0,
+        "y": 1,
+        "w": 1280,
+        "h": 837
+      },
+      {
+        "title": "Paramètres",
+        "process": "ApplicationFrameHost.exe",
+        "exe": "C:\\Windows\\System32\\ApplicationFrameHost.exe",
+        "x": 0,
+        "y": 140,
+        "w": 1296,
+        "h": 846
+      },
+      {
+        "title": "VM-Streamer View (Voicemeeter Custom GUI Example)",
+        "process": "VMStreamerView.exe",
+        "exe": "C:\\Program Files (x86)\\VB\\Voicemeeter\\VMStreamerView.exe",
+        "x": 701,
+        "y": 277,
+        "w": 800,
+        "h": 585
+      },
+      {
+        "title": "C:\\Users\\coco\\Documents\\Rainmeter\\Skins\\Mond\\Clock\\Clock.ini",
+        "process": "Rainmeter.exe",
+        "exe": "C:\\Program Files\\Rainmeter\\Rainmeter.exe",
+        "x": 433,
+        "y": 0,
+        "w": 1487,
+        "h": 462
+      },
+      {
+        "title": "C:\\wamp64\\bin\\mysql\\mysql9.1.0\\bin\\mysqld.exe",
+        "process": "WindowsTerminal.exe",
+        "exe": "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.24.12741.0_x64__8wekyb3d8bbwe\\WindowsTerminal.exe",
+        "x": 96,
+        "y": 104,
+        "w": 1129,
+        "h": 635
+      },
+      {
+        "title": "Medal",
+        "process": "Medal.exe",
+        "exe": "C:\\Users\\coco\\AppData\\Local\\Medal\\current\\Medal.exe",
+        "x": -7,
+        "y": 1,
+        "w": 1934,
+        "h": 1038
+      },
+      {
+        "title": "Expérience d’entrée Windows",
+        "process": "TextInputHost.exe",
+        "exe": "C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TextInputHost.exe",
+        "x": 0,
+        "y": 0,
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  }
+}

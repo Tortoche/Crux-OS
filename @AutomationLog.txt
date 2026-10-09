@@ -1,0 +1,1 @@
+2026-10-09 14:27:01.051 <string>[3] <module> -> Find Control Timeout(10s): {ControlType: WindowControl}
