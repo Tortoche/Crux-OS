@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment and secrets
+.env
+*.env
+*.key
+*.pem
+
+# Local databases & logs
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/facts.db
+data/voice_profiles.db
+logs/
+*.log
+
+# Node & Frontend dependencies
+node_modules/
+.npm/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Coucou submodule/build caches
+coucou-repo/windows/node_modules/
+coucou-repo/windows/src-tauri/target/
+coucou-repo/windows/dist/assets/*.map

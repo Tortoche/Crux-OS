@@ -1,0 +1,81 @@
+# Crux AI - Assistant Vocal Jarvis Haute Performance
+# Configuration du système
+
+# ==========================================
+# 1. PARAMÈTRES GÉNÉRAUX & WAKE WORD
+# ==========================================
+assistant:
+  name: "Crux"
+  user_name: "Corentin"
+  # Formules de réveil reconnues :
+  # "Crux", "Salut Crux", "Bonjour Crux", "Hey Crux", "Dis Crux", "Yo Crux", "Ok Crux", etc.
+  wake_words:
+    - "crux"
+    - "salut crux"
+    - "bonjour crux"
+    - "hey crux"
+    - "dis crux"
+    - "coucou crux"
+    - "yo crux"
+    - "ok crux"
+  language: "fr"
+  max_response_sentences: 1    # Réponse ultra directe et concise
+
+# ==========================================
+# 2. CONVERSATION CONTINUE (MODE SESSION)
+# ==========================================
+conversation:
+  keep_listening_until_exit: true
+  silence_timeout_seconds: 0.5   # Détection instantanée : Crux répond immédiatement après la fin de phrase
+  session_timeout_seconds: 30.0  # 30 secondes d'attente avant de se mettre en veille
+
+# ==========================================
+# 3. RECONNAISSANCE VOCALE RAPIDE (STT)
+# ==========================================
+stt:
+  engine: "whisper_local"
+  # "base" est ultra-rapide (~250ms) tout en comprenant parfaitement le français
+  model_size: "base"
+  compute_type: "int8"
+  device: "cpu"
+  cpu_threads: 4
+
+# ==========================================
+# 4. VOIX (TEXT-TO-SPEECH) & SORTIE AUDIO
+# ==========================================
+tts:
+  engine: "edge"
+  # Priorité de sortie automatique :
+  # 1. Enceinte JBL (si allumée et appairée en Bluetooth)
+  # 2. Enceintes de l'écran (PL2766H / VA2405)
+  # 3. Haut-parleurs par défaut / Casque
+  auto_device_routing: true
+  edge:
+    voice_fr: "fr-FR-HenriNeural"   # Voix masculine distinguée style Jarvis
+    voice_en: "en-GB-RyanNeural"
+    rate: "+0%"
+    pitch: "+0Hz"
+
+  elevenlabs:
+    api_key: ""
+    voice_id: "nPczCjzI2devNBz1zQrb"
+    model_id: "eleven_multilingual_v2"
+
+# ==========================================
+# 5. CERVEAU & INTÉGRATION ANTIGRAVITY
+# ==========================================
+brain:
+  engine: "antigravity"
+  model: "gemini-3.8-flash"
+  api_key: "AIzaSyDEu0gqAjhnN9noXPOVnYO8YVIy_Q3ezuE"
+  projects_root: "C:\\Users\\coco\\Documents"
+
+# ==========================================
+# 6. NOTCH HUD INTERACTIF (INSPIRÉ DE COUCOU)
+# ==========================================
+hud:
+  enabled: true
+  style: "dynamic_island"
+  position: "top_center"
+  expanded_on_click: true
+
