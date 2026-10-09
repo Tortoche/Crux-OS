@@ -20,6 +20,7 @@ from core.vision.screen_capture import ScreenCapture
 from core.agent_tools.computer_use import ComputerUseController
 from core.plugins.manager import PluginManager
 from core.ui_generator.runtime import DynamicUIRuntime
+from core.handoff.manager import HandoffManager
 
 USER_NAME = "Corentin"
 
@@ -97,6 +98,10 @@ class CruxAgent:
 
         # Moteur d'interface dynamique générative (Generative Dynamic UI)
         self.ui_runtime = DynamicUIRuntime.get_instance()
+        
+        # Gestionnaire de continuité et télécommande mobile (Handoff)
+        self.handoff = HandoffManager.get_instance()
+        self.handoff.agent = self
         
         # Suivi de conversation native Antigravity (réutilisation de session pour 0 latence)
         self._antigravity_cid: Optional[str] = None
@@ -630,6 +635,33 @@ class CruxAgent:
                 self._record_turn("user", user_text)
                 self._record_turn("model", msg)
                 return msg, False
+
+        # ==========================================
+        # 0.9 HANDOFF MULTI-APPAREILS & TÉLÉCOMMANDE (PC <-> MOBILE)
+        # ==========================================
+        handoff_to_mobile_triggers = [
+            "passe sur mon telephone", "passe sur mon portable", "passe sur mon smartphone",
+            "bascule sur mon telephone", "bascule sur mon portable", "bascule sur mon smartphone",
+            "passe sur le telephone", "passe sur le portable", "passe sur le smartphone",
+            "reprends sur mon telephone", "reprends sur mon portable", "reprends sur mon smartphone",
+            "passe sur telephone", "bascule sur telephone", "passe sur mobile"
+        ]
+        if any(tr in lower_clean for tr in handoff_to_mobile_triggers):
+            reply, is_exit = self.handoff.transfer_to_mobile(self)
+            self._record_turn("user", user_text)
+            self._record_turn("model", reply)
+            return reply, is_exit
+
+        handoff_to_pc_triggers = [
+            "reprends sur le pc", "reprends sur l'ordinateur", "reprends sur lordinateur",
+            "bascule sur le pc", "bascule sur l'ordinateur", "bascule sur lordinateur",
+            "retourne sur le pc", "passe sur le pc", "reviens sur le pc", "active le pc"
+        ]
+        if any(tr in lower_clean for tr in handoff_to_pc_triggers):
+            reply, is_exit = self.handoff.resume_on_pc(self)
+            self._record_turn("user", user_text)
+            self._record_turn("model", reply)
+            return reply, is_exit
 
         # ==========================================
         # 1. DÉTECTION PRIORITAIRE : FIN DE SESSION

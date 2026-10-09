@@ -39,3 +39,6 @@ $RECYCLE.BIN/
 coucou-repo/windows/node_modules/
 coucou-repo/windows/src-tauri/target/
 coucou-repo/windows/dist/assets/*.map
+
+# Agentic scratch & ledgers
+.agents/

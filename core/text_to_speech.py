@@ -30,7 +30,7 @@ class TextToSpeech:
         target_lower = target.lower().strip()
         if "jbl" in target_lower or "enceinte" in target_lower:
             self.force_device = "jbl"
-        elif "ecran" in target_lower or "moniteur" in target_lower or "screen" in target_lower:
+        elif "ecran" in target_lower or "moniteur" in target_lower or "screen" in target_lower or "pl2766h" in target_lower:
             self.force_device = "screen"
         else:
             self.force_device = None

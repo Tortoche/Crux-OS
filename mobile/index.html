@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#07080a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Crux OS Mobile</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. NOTCH TACTILE DYNAMIQUE EN HAUT D'ÉCRAN (COUCOU DYNAMIC ISLAND) -->
+  <div class="notch-wrapper">
+    <div class="dynamic-notch collapsed" id="dynamicNotch">
+      
+      <!-- État Replié (Pilule discrète) -->
+      <div class="notch-compact-content">
+        <div class="compact-mochi-box">
+          <canvas id="mochiCanvas" width="28" height="28"></canvas>
+        </div>
+        <div class="compact-label">
+          <span>Crux</span>
+          <div class="status-dot" id="statusDot"></div>
+        </div>
+      </div>
+
+      <!-- État Déplié (Grande Bulle Générative avec Physique de Ressort) -->
+      <div class="notch-expanded-content" id="notchExpandedContent">
+        <div class="drag-handle" id="dragHandle"></div>
+
+        <div class="mochi-header-zone">
+          <div class="mochi-canvas-box" id="mochiBoxHeader" title="Toucher pour écouter">
+            <!-- Canvas réutilisé ou synchronisé -->
+          </div>
+          <div class="header-status-info">
+            <span class="conn-badge" id="connBadge">PC Direct (192.168.1.16)</span>
+            <span class="mochi-speech-bubble" id="mochiSpeechBubble">Bonjour Corentin, à votre service.</span>
+          </div>
+        </div>
+
+        <!-- Cartes Génératives en direct -->
+        <div class="generative-scroll-area">
+          
+          <!-- Carte 1 : Tâches & Activités Interactives -->
+          <div class="gen-card">
+            <div class="card-title-row">
+              <span>📋 Activités & Tâches</span>
+              <span class="counter-badge" id="tasksCounter">4 restantes</span>
+            </div>
+            <div class="tasks-list" id="tasksContainer"></div>
+            <div class="task-add-row">
+              <input type="text" id="taskInput" class="task-input" placeholder="Ajouter une tâche...">
+              <button id="addTaskBtn" class="task-btn">Ajouter</button>
+            </div>
+          </div>
+
+          <!-- Carte 2 : Spotify Mobile -->
+          <div class="gen-card">
+            <div class="card-title-row">
+              <span>🎵 Lecteur Spotify</span>
+              <span class="counter-badge">112 BPM</span>
+            </div>
+            <div class="spotify-row">
+              <div class="spotify-info">
+                <span class="spotify-track" id="spTrack">Bohemian Rhapsody</span>
+                <span class="spotify-artist" id="spArtist">Queen • A Night at the Opera</span>
+              </div>
+              <div class="spotify-controls">
+                <button class="icon-btn" id="rcPlayPause">⏯</button>
+                <button class="icon-btn" id="rcNext">⏭</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carte 3 : Monitoring Système & Télémétrie -->
+          <div class="gen-card">
+            <div class="card-title-row">
+              <span>⚡ Monitoring Matériel</span>
+              <span class="counter-badge" id="telemetryNode">H24 Actif</span>
+            </div>
+            <div class="telemetry-grid">
+              <div class="telemetry-item">
+                <span class="tel-label">CPU</span>
+                <span class="tel-val" id="telCpu">18%</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="tel-label">RAM</span>
+                <span class="tel-val" id="telRam">42%</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="tel-label">Latence</span>
+                <span class="tel-val" id="telLat">< 1 ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carte 4 : Crypto & Marchés -->
+          <div class="gen-card">
+            <div class="card-title-row">
+              <span>📈 Taux Crypto Live</span>
+              <span class="counter-badge">Temps réel</span>
+            </div>
+            <div class="crypto-row">
+              <div class="crypto-badge">
+                <span class="crypto-name">BTC</span>
+                <span class="crypto-price">$94,250</span>
+              </div>
+              <div class="crypto-badge">
+                <span class="crypto-name">ETH</span>
+                <span class="crypto-price">$3,480</span>
+              </div>
+              <div class="crypto-badge">
+                <span class="crypto-name">SOL</span>
+                <span class="crypto-price">$215</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. ZONE CENTRALE (DASHBOARD AMBIANT AVEC COMPAGNON MOCHI 60 FPS) -->
+  <main class="main-ambient-zone">
+    <div class="center-mochi-box" id="centerMochiBox" title="Toucher pour écouter">
+      <canvas id="centerMochiCanvas" width="140" height="140"></canvas>
+    </div>
+    <div class="ambient-status-text" id="ambientNodeText">Crux OS • Prêt</div>
+    <div class="wake-word-hint">Dites « Coucou Crux » ou touchez Mochi</div>
+  </main>
+
+  <!-- 3. HUB TACTILE BAS D'ÉCRAN ADAPTÉ AUX POUCES -->
+  <nav class="thumb-hub-bottom">
+    <button class="thumb-action-btn" id="openDrawerBtn">
+      <span>🛠️</span>
+      <span>Contrôles</span>
+    </button>
+
+    <button class="thumb-mic-btn" id="thumbMicBtn" title="Écoute Vocale">
+      <span>🎙️</span>
+    </button>
+
+    <button class="thumb-action-btn" id="rcHandoffPC">
+      <span>🖥️</span>
+      <span>Vers PC</span>
+    </button>
+  </nav>
+
+  <!-- 4. TIROIR COULISSANT CONTRÔLES MATÉRIELS & TÉLÉCOMMANDE PC -->
+  <div class="slide-drawer" id="slideDrawer">
+    <div class="drawer-header">
+      <span>Contrôles Matériels & Télécommande</span>
+      <button class="close-drawer-btn" id="closeDrawerBtn">✕</button>
+    </div>
+
+    <div class="hardware-controls-grid">
+      <!-- Flash / Torche -->
+      <div class="hw-tile" id="hwTileTorch">
+        <span class="hw-icon">🔦</span>
+        <div class="hw-details">
+          <span class="hw-name">Lampe Torche</span>
+          <span class="hw-status" id="hwTorchStatus">Éteint</span>
+        </div>
+      </div>
+
+      <!-- Batterie -->
+      <div class="hw-tile">
+        <span class="hw-icon">🔋</span>
+        <div class="hw-details">
+          <span class="hw-name">Batterie</span>
+          <span class="hw-status" id="hwBatteryStatus">100%</span>
+        </div>
+      </div>
+
+      <!-- Haptique / Vibration -->
+      <div class="hw-tile" id="hwTileVib">
+        <span class="hw-icon">📳</span>
+        <div class="hw-details">
+          <span class="hw-name">Vibration</span>
+          <span class="hw-status">Tester retour</span>
+        </div>
+      </div>
+
+      <!-- Afficher le Bureau PC -->
+      <div class="hw-tile" id="rcDesktop">
+        <span class="hw-icon">🪟</span>
+        <div class="hw-details">
+          <span class="hw-name">Bureau PC</span>
+          <span class="hw-status">Minimiser tout</span>
+        </div>
+      </div>
+
+      <!-- Volume PC + -->
+      <div class="hw-tile" id="rcVolUp">
+        <span class="hw-icon">🔊</span>
+        <div class="hw-details">
+          <span class="hw-name">Volume PC +</span>
+          <span class="hw-status">Monter le son</span>
+        </div>
+      </div>
+
+      <!-- Volume PC - -->
+      <div class="hw-tile" id="rcVolDown">
+        <span class="hw-icon">🔉</span>
+        <div class="hw-details">
+          <span class="hw-name">Volume PC -</span>
+          <span class="hw-status">Baisser le son</span>
+        </div>
+      </div>
+
+      <!-- Verrouiller PC -->
+      <div class="hw-tile" id="rcLock">
+        <span class="hw-icon">🔒</span>
+        <div class="hw-details">
+          <span class="hw-name">Verrouiller PC</span>
+          <span class="hw-status">Win + L</span>
+        </div>
+      </div>
+
+      <!-- Handoff vers Mobile -->
+      <div class="hw-tile" id="rcHandoffMobile">
+        <span class="hw-icon">📱</span>
+        <div class="hw-details">
+          <span class="hw-name">Passe sur Mobile</span>
+          <span class="hw-status">Veille PC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

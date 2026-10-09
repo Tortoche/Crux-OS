@@ -1,0 +1,633 @@
+:root {
+  --bg-primary: #07080a;
+  --bg-card: rgba(18, 20, 26, 0.75);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --accent-neon: #6366f1;
+  --accent-cyan: #06b6d4;
+  --accent-green: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-red: #ef4444;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --spring-easing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --safe-top: max(12px, env(safe-area-inset-top));
+  --safe-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+/* ==========================================
+   1. NOTCH TACTILE DYNAMIQUE (COUCOU DYNAMIC ISLAND)
+   ========================================== */
+.notch-wrapper {
+  position: absolute;
+  top: var(--safe-top);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.dynamic-notch {
+  pointer-events: auto;
+  background: rgba(10, 11, 15, 0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--bg-card-border);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), 0 0 20px rgba(99, 102, 241, 0.12);
+  transition: width 0.45s var(--spring-easing), height 0.45s var(--spring-easing), border-radius 0.4s ease, transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  touch-action: pan-y;
+}
+
+/* État Replié (Pilule discrète) */
+.dynamic-notch.collapsed {
+  width: 185px;
+  height: 40px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.notch-compact-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+}
+
+.compact-mochi-box {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compact-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+.status-dot.fedora {
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.status-dot.offline {
+  background-color: var(--accent-amber);
+  box-shadow: 0 0 8px var(--accent-amber);
+}
+
+/* État Déplié (Grande Bulle Générative) */
+.dynamic-notch.expanded {
+  width: 92%;
+  max-width: 440px;
+  height: 78vh;
+  border-radius: 32px;
+}
+
+.notch-expanded-content {
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding: 16px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dynamic-notch.expanded .notch-expanded-content {
+  display: flex;
+}
+
+.dynamic-notch.expanded .notch-compact-content {
+  display: none;
+}
+
+.drag-handle {
+  width: 48px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  margin-bottom: 12px;
+  align-self: center;
+  cursor: grab;
+}
+
+/* Compagnon Mochi Header */
+.mochi-header-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mochi-canvas-box {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  cursor: pointer;
+}
+
+#mochiCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+.header-status-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.conn-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  margin-bottom: 4px;
+}
+
+.conn-badge.fedora {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--accent-cyan);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.conn-badge.offline {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.mochi-speech-bubble {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 220px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================
+   2. CONTENEUR DES CARTES GÉNÉRATIVES EN DIRECT
+   ========================================== */
+.generative-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 2px;
+}
+
+.gen-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 20px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(16px);
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.counter-badge {
+  background: rgba(99, 102, 241, 0.2);
+  color: var(--accent-neon);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Tâches & Activités interactives */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.task-item.done .task-check {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-del-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.task-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.task-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #fff;
+  outline: none;
+}
+
+.task-btn {
+  background: var(--accent-neon);
+  border: none;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Carte Spotify Mobile */
+.spotify-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spotify-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotify-track {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.spotify-artist {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.spotify-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Carte Monitoring & Télémétrie */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.telemetry-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tel-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.tel-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+/* Carte Crypto Ticker */
+.crypto-row {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px 0;
+}
+
+.crypto-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+}
+
+.crypto-name {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.crypto-price {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ==========================================
+   3. ZONE CENTRALE (DASHBOARD AMBIANT)
+   ========================================== */
+.main-ambient-zone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 16px;
+  margin-top: 50px;
+}
+
+.center-mochi-box {
+  width: 140px;
+  height: 140px;
+  cursor: pointer;
+  filter: drop-shadow(0 0 24px rgba(99, 102, 241, 0.3));
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.center-mochi-box:active {
+  transform: scale(0.95);
+}
+
+#centerMochiCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+.ambient-status-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.wake-word-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ==========================================
+   4. HUB TACTILE BAS D'ÉCRAN (POUCES ACCESSIBLES)
+   ========================================== */
+.thumb-hub-bottom {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(12, 14, 18, 0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--bg-card-border);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+  gap: 12px;
+}
+
+.thumb-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  height: 52px;
+  flex: 1;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.thumb-action-btn:active {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(0.97);
+}
+
+.thumb-mic-btn {
+  background: linear-gradient(135deg, var(--accent-neon), #4f46e5);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
+  cursor: pointer;
+  margin-top: -24px;
+  transition: transform 0.2s var(--spring-easing), box-shadow 0.2s ease;
+}
+
+.thumb-mic-btn.active {
+  transform: scale(1.12);
+  box-shadow: 0 0 35px var(--accent-cyan);
+  background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+}
+
+/* Panneau Coulissant Télécommande & Matériel */
+.slide-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(14, 16, 22, 0.95);
+  backdrop-filter: blur(30px);
+  border-top: 1px solid var(--bg-card-border);
+  border-radius: 30px 30px 0 0;
+  padding: 16px 20px calc(var(--safe-bottom) + 16px) 20px;
+  z-index: 200;
+  transform: translateY(105%);
+  transition: transform 0.4s var(--spring-easing);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.slide-drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.close-drawer-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.hardware-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.hw-tile {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hw-tile.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent-neon);
+}
+
+.hw-icon {
+  font-size: 22px;
+}
+
+.hw-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.hw-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.hw-status {
+  font-size: 11px;
+  color: var(--text-muted);
+}
