@@ -1,83 +1,75 @@
-# ⚡ Crux OS — Autonomous Generative Desktop AI for Windows
+# ⚡ Crux OS — Assistant IA Autonome & Génératif pour Windows
 
-> **A high-performance, multimodal Jarvis assistant for Windows 11 featuring Generative Dynamic UI, Bitwarden credential management, 10-Agent War Room, and Coucou Dynamic Island integration.**
+> **Un assistant personnel façon J.A.R.V.I.S. pour Windows 11 doté d'interfaces génératives créées à la volée, d'une île dynamique (Notch Coucou), d'un gestionnaire de sécurité Bitwarden et d'une War Room stratégique à 10 agents.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform: Windows 11](https://img.shields.io/badge/Platform-Windows%2011-0078D4.svg)](https://microsoft.com)
-[![Engine: Gemini 3.8 Flash](https://img.shields.io/badge/Engine-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google)
-[![Tests: 100% Passing](https://img.shields.io/badge/Tests-84%2F84%20Passing-22C55E.svg)](tests/)
+[![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](LICENSE)
+[![Plateforme: Windows 11](https://img.shields.io/badge/Plateforme-Windows%2011-0078D4.svg)](https://microsoft.com)
+[![Moteur: Gemini 3.8 Flash](https://img.shields.io/badge/Moteur-Gemini%203.8%20Flash-4285F4.svg)](https://deepmind.google)
+[![Tests: 84/84 Réussis](https://img.shields.io/badge/Tests-84%2F84%20R%C3%A9ussis-22C55E.svg)](tests/)
 
 ---
 
-## 🌟 Overview
+## 🌟 Présentation Générale
 
-Crux OS is an open-source autonomous personal operating assistant inspired by Marvel's **J.A.R.V.I.S.**, engineered for power users, developers, and gamers. 
+**Crux OS** est un système d'assistance personnelle autonome pour Windows, inspiré de **J.A.R.V.I.S.** (Marvel), pensé pour les créateurs, développeurs, gamers et utilisateurs intensifs.
 
-Unlike heavy local models that monopolize 8+ GB of GPU VRAM or sluggish web bots that click around with physical mouse cursors, Crux operates **100% headlessly in memory** via native Windows APIs (UI Automation, WASAPI Core Audio, DDC/CI monitor hardware) and combines a **Dynamic Notch Island** with a **Generative Morphing Hub**.
+Contrairement aux solutions traditionnelles qui monopolisent 8 Go de VRAM sur votre carte graphique ou aux bots lents qui déplacent la souris physique, Crux opère **100% en arrière-plan en mémoire** via les API natives de Windows (UI Automation, WASAPI Core Audio, DDC/CI matériel multi-écrans) et fusionne une **Notch Dynamique** discrète avec un **Hub Central Génératif**.
 
 ```
                 ┌──────────────────────────────────────────────┐
-                │        Coucou Dynamic Notch (Top Bar)        │
+                │        Notch Dynamique Coucou (En Haut)      │
                 └──────────────────────┬───────────────────────┘
-                                       │ (Morph Transition)
+                                       │ (Transition Morphing)
                                        ▼
         ┌──────────────────────────────────────────────────────────────┐
-        │            Central Floating Hub (Generative UI)              │
-        │   - Live HTML/CSS/JS created on-the-fly                      │
-        │   - Collaborative Human-in-the-Loop review                   │
-        │   - Interactive widgets, charts & cards                      │
+        │            Hub Central Flottant (UI Générative)              │
+        │   - Code HTML/CSS/JS synthétisé à la volée                   │
+        │   - Éléments interactifs : tâches, jauges, cartes            │
+        │   - Zéro preset figé : adaptable en temps réel               │
         └──────────────────────────────┬───────────────────────────────┘
                                        │
-    ┌──────────────────────────────────┴──────────────────────────────────┐
-    ▼                                  ▼                                  ▼
-[Bitwarden CLI]               [10-Agent War Room]              [Headless OS Core]
-- Vault decryption            - Market Research                - In-Memory UIA
-- Account creation            - Competitor Analysis            - WASAPI Audio Mixer
-- API Token extraction        - Unit Economics / LTV           - DDC/CI Brightness
-- Ephemeral clipboard         - 7-Day MVP Roadmap              - Spotify CLI JSON
+     ┌─────────────────────────────────┴─────────────────────────────────┐
+     ▼                                 ▼                                 ▼
+[Opérateur Bitwarden]         [War Room à 10 Agents]            [Noyau Windows Sans Souris]
+- Déchiffrement mémoire       - Étude de marché en direct       - Arbre UI Automation
+- Inscription autonome        - Analyse concurrentielle         - Mixeur Audio WASAPI
+- Extraction clés API         - Modèle économique / LTV         - Luminosité DDC/CI
+- Presse-papier éphémère      - Synthèse vocale 30s             - Spotify CLI instantané
 ```
 
 ---
 
-## 🚀 Key Architectural Pillars
+## 🚀 Piliers Fondamentaux de l'Architecture
 
-### 1. 🎨 Generative Dynamic UI (Zero Pre-baked Templates)
-Crux doesn't use static templates. When you ask for your daily schedule, a hardware comparison, or an email draft:
-- Crux **writes and mounts the interactive web component in real time** (< 300 ms).
-- The Coucou Notch detaches from the top edge and morphs into a frosted-glass central floating hub.
-- Edit visually, speak modifications, and confirm with *"Looks good, send it!"*.
+### 1. 🎨 Interfaces Dynamiques Génératives (Zéro Template Prédéfini)
+Fini les fenêtres rigides ou les variables injectées dans un modèle statique :
+- Lorsque vous demandez *"Crux affiche mes activités à faire"*, Crux **conçoit et injecte l'interface interactive en direct** (< 300 ms).
+* La Notch Coucou s'agrandit pour afficher une surface en verre dépoli sombre (*Dark Glassmorphism*) avec vos tâches, checkboxes interactives et compteur dynamique.
+* Vous pouvez ajouter des éléments à la voix (*"Crux ajoute la tâche..."*) ou cocher directement à la souris : la vue s'adapte immédiatement sans recharger la page.
 
-### 2. 🔐 Bitwarden Operator & Autonomous Web Agent
-- Interfaces with the official **Bitwarden CLI (`bw`)** using encrypted memory sessions.
-- Generates 32-character high-entropy passwords, creates accounts autonomously in a background headless browser, intercepts email/SMS confirmation codes, and extracts developer API keys directly into your project `.env` files.
+### 2. 🔐 Gestionnaire de Sécurité & Opérateur Web Bitwarden
+- Dialogue direct avec le **Bitwarden CLI officiel (`bw`)** via des sessions mémoire chiffrées.
+- Génère des mots de passe ultra-sécurisés, crée des comptes en tâche de fond sur le web, intercepte les codes de validation et injecte directement les clés API de développement dans vos fichiers `.env`.
 
-### 3. 🧠 10-Agent Strategic War Room
-Ask *"Crux, analyze my idea: an automated service for X, is it profitable?"*:
-- Spawns **10 specialized sub-agents in parallel**: Market Size, Competitor Intelligence, Pricing Model, Customer Acquisition, Technical Stack, Devil's Advocate Risk Officer, Legal & GDPR, Growth Hooks, 7-Day MVP, and Financial Simulation.
-- Delivers a profitability score /100, an executive Markdown report on your desktop, and a concise 30-second spoken verdict.
+### 3. 🧠 War Room Stratégique à 10 Agents
+Quand vous demandez : *"Crux, analyse mon idée de projet : est-ce rentable ?"* :
+- Déploie **10 sous-agents spécialisés en parallèle** : Taille du marché, Concurrence, Modèle de prix, Acquisition client, Architecture technique, Détecteur de risques, Conformité légale, Leviers de croissance, Prototype en 7 jours et Simulation financière.
+- Produit un score de rentabilité sur 100, un rapport Markdown complet sur le bureau et un verdict vocal limpide en 30 secondes.
 
-### 4. 👁️ Multimodal Camera Vision & Contactless Air Gestures
-- Instant snapshot analysis via Gemini 3.8 Flash Vision.
-- Identifies physical objects held in hand, reads paper invoices/books via OCR.
-- **Air Gestures (Webcam)**: Finger on lips (🤫 Mute), open palm (✋ Stop/Pause), thumbs-up (👍 Confirm).
-- Multi-speaker voice recognition with dynamic guest enrollment (*"Crux, learn Thomas' voice"*).
+### 4. 👁️ Vision Multimodale à la Demande (0 Token en Veille)
+- Activée **strictement sur demande vocale** (*"Crux regarde mon écran"*, *"Qu'est-ce qui cloche dans cette erreur ?"*).
+- Zéro capture d'écran et zéro token consommé lorsque Crux est en veille. Analyse instantanée via Gemini 3.8 Flash Vision.
 
-### 5. 💻 Headless PC Automation (Zero Mouse Movement)
-- **In-Memory UI Automation (UIA)**: Inspects and triggers controls without moving your physical mouse cursor.
-- **Hardware DDC/CI Brightness**: Controls dual monitors (`PL2766H` and vertical `ViewSonic`) directly via hardware I2C busses.
-- **Per-App WASAPI Audio Mixer**: Adjusts volumes for Discord, Spotify, and games individually in < 5 ms.
-- **Native Spotify CLI**: Fast JSON search, autoplay top playlist/song, synchronized with Coucou's 112 BPM dancing mascot Mochi.
+### 5. 🎵 Contrôle Multimédia & Audio sans Curseur
+- Contrôle Spotify programmatique via `spotify_cli` natif en JSON (recherche, playlists, reprise instantanée).
+- Routage audio indépendant vers la sortie dédiée de l'écran **PL2766H**.
+- Règle d'or de politesse : le prénom Corentin n'est prononcé qu'une seule fois à l'accueil de la session, pour un échange direct et percutant ensuite.
 
 ---
 
-## 🛠️ Quickstart
+## 🛠️ Installation & Démarrage Rapide
 
-### Prerequisites
-- Windows 10 / 11 (64-bit)
-- Python 3.10+
-- Node.js 18+ (for Coucou Electron runtime)
-
-### 1. Clone & Setup
+### 1. Cloner le Projet
 ```powershell
 git clone https://github.com/Tortoche/Crux-OS.git
 cd Crux-OS
@@ -86,48 +78,36 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2. Launch Assistant
+### 2. Lancer Crux OS
 ```powershell
-# Interactive voice mode with Coucou Dynamic Island:
+# Mode vocal interactif complet avec l'île Coucou :
 .\launch_crux.bat
 
-# Terminal / CLI interactive mode:
+# Mode console / terminal direct :
 python main.py --cli
 ```
 
-### 3. Run Tests
+### 3. Exécuter les Tests Automatisés
 ```powershell
 python -m unittest discover tests
 ```
 
 ---
 
-## 📜 Complete Feature Matrix
+## 👥 Contributeurs & Remerciements
 
-Crux OS is architected across **102 comprehensive capabilities**:
-- **UI & Hub** (Morphing Central Hub, Live Generative UI, Style Mimicry)
-- **Security & Web** (Bitwarden CLI, Headless Registration, Token Harvester, Ephemeral Clipboard)
-- **Strategic Swarm** (10-Agent War Room, Risk Officer, Market Scout)
-- **Computer Vision** (Webcam Object Recognition, Air Gestures, OCR Scanner, Eye-Tracking)
-- **Voice Intelligence** (Voice Enrollment, Diarization, SSML Expressiveness, Live Interpreter)
-- **Audio & Hardware** (WASAPI Per-App Mixer, DDC/CI Multi-Display, Native Spotify CLI)
-- **Proactive Core** (5D Hybrid Memory, Habit Engine, Project Scaffolder, Auto-Updater with User Consent)
+Le projet Crux OS est développé et maintenu par :
 
----
-
-## 👥 Contributors & Acknowledgements
-
-Crux OS is built and maintained by:
-
-| Contributor / Partner | Role | Focus Area |
+| Contributeur / Partenaire | Rôle | Domaine d'intervention |
 |:---|:---|:---|
-| **[Corentin (@Tortoche)](https://github.com/Tortoche)** | **Lead Creator & Systems Architect** | Full project vision, Windows integration, voice ergonomics, tests & workflow |
-| **[Google Antigravity](https://github.com/google)** | **Autonomous Agentic Coding Engine** | Multi-agent orchestration, refactoring, latency optimization & test verification |
-| **[Google DeepMind Gemini](https://deepmind.google/technologies/gemini/)** | **Multimodal AI Brain** | Gemini 3.8 Flash Vision, low-latency reasoning & generative dynamic UI synthesis |
-| **[Louis-CFM (Coucou)](https://github.com/Louis-CFM/coucou)** | **Dynamic Island UX Foundation** | Original Coucou notch design & Mochi companion |
+| **[Corentin (@Tortoche)](https://github.com/Tortoche)** | **Créateur & Architecte Principal** | Vision globale, intégration Windows 11, ergonomie vocale et tests |
+| **[gemini-code-assist[bot]](https://github.com/apps/gemini-code-assist)** | **Robot IA Certifié Google** | Configuration agentique & liaison écosystème Google |
+| **[Google Antigravity](https://github.com/google)** | **Moteur de Développement Agentique** | Orchestration multi-agents, optimisation de la latence et validation |
+| **[Google DeepMind Gemini](https://deepmind.google/technologies/gemini/)** | **Cerveau IA Multimodal** | Gemini 3.8 Flash Vision, raisonnement direct et synthèse d'UI à la volée |
+| **[Louis-CFM (Coucou)](https://github.com/Louis-CFM/coucou)** | **Fondation Dynamic Island** | Design initial de la notch Coucou et compagnon Mochi |
 
 ---
 
-## 📄 License
+## 📄 Licence
 
-Distributed under the **MIT License**. See `LICENSE` for details.
+Distribué sous la licence libre **MIT**. Consultez le fichier `LICENSE` pour plus d'informations.
