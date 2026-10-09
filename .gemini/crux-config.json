@@ -2,7 +2,7 @@
   "project": "Crux-OS",
   "engine": "Google Antigravity & Gemini 3.8 Flash",
   "assistant": "Crux",
-  "lead_architect": "Corentin (TortocheTV)",
+  "lead_architect": "Corentin (Tortoche)",
   "features": {
     "generative_dynamic_ui": true,
     "multimodal_vision": true,

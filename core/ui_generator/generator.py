@@ -52,7 +52,7 @@ class DynamicUIDesigner:
     def _build_activities_interface(self, prompt: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         view_id = f"ui_tasks_{uuid.uuid4().hex[:6]}"
         tasks = [
-            {"id": "t1", "text": "Pousser le code Crux OS sur GitHub TortocheTV", "done": True, "tag": "Git"},
+            {"id": "t1", "text": "Pousser le code Crux OS sur GitHub Tortoche", "done": True, "tag": "Git"},
             {"id": "t2", "text": "Valider la suite de tests automatisés (76 tests)", "done": True, "tag": "Tests"},
             {"id": "t3", "text": "Tester le moteur d'interface dynamique à la volée", "done": False, "tag": "Coucou"},
             {"id": "t4", "text": "Vérifier le contrôle vocal et audio sur PL2766H", "done": False, "tag": "Audio"},

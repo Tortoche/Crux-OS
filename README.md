@@ -79,7 +79,7 @@ Ask *"Crux, analyze my idea: an automated service for X, is it profitable?"*:
 
 ### 1. Clone & Setup
 ```powershell
-git clone https://github.com/TortocheTV/Crux-OS.git
+git clone https://github.com/Tortoche/Crux-OS.git
 cd Crux-OS
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -121,7 +121,7 @@ Crux OS is built and maintained by:
 
 | Contributor / Partner | Role | Focus Area |
 |:---|:---|:---|
-| **[Corentin (@TortocheTV)](https://github.com/TortocheTV)** | **Lead Creator & Systems Architect** | Full project vision, Windows integration, voice ergonomics, tests & workflow |
+| **[Corentin (@Tortoche)](https://github.com/Tortoche)** | **Lead Creator & Systems Architect** | Full project vision, Windows integration, voice ergonomics, tests & workflow |
 | **[Google Antigravity](https://github.com/google)** | **Autonomous Agentic Coding Engine** | Multi-agent orchestration, refactoring, latency optimization & test verification |
 | **[Google DeepMind Gemini](https://deepmind.google/technologies/gemini/)** | **Multimodal AI Brain** | Gemini 3.8 Flash Vision, low-latency reasoning & generative dynamic UI synthesis |
 | **[Louis-CFM (Coucou)](https://github.com/Louis-CFM/coucou)** | **Dynamic Island UX Foundation** | Original Coucou notch design & Mochi companion |
